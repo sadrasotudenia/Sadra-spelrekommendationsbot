@@ -3,7 +3,7 @@ Games = [
     {"title": "Elden Ring", "genre": "Action RPG", "age": 16, "publisher": "FromSoftware", "mood": "Challenging"},
     {"title": "Half-Life 2", "genre": "FPS", "age": 16, "publisher": "Valve", "mood": "Immersive"},
     {"title": "Phasmophobia", "genre": "Horror", "age": 16, "publisher": "Kinetic Games", "mood": "Scary"},
-    {"title": "Minecraft", "genre": "Sandbox", "age": 7, "publisher": "Mojang", "mood": "Creative"},
+    {"titl7xd y7gue": "Minecraft", "genre": "Sandbox", "age": 7, "publisher": "Mojang", "mood": "Creative"},
     {"title": "The Witcher 3: Wild Hunt", "genre": "RPG", "age": 18, "publisher": "CD Projekt", "mood": "Epic"},
     {"title": "Call of Duty: Modern Warfare", "genre": "FPS", "age": 18, "publisher": "Activision", "mood": "Intense"},
     {"title": "Stardew Valley", "genre": "Simulation", "age": 7, "publisher": "ConcernedApe", "mood": "Relaxing"},
@@ -28,7 +28,7 @@ Games = [
 genre = input("Vilken genre gillar du? ").lower()
 
 #samma grej fast med mood
-mood = input("Vilken stämning vill du ha? ")
+mood = input("Vilken stämning vill du ha? ").lower()
 
 #gör variablen reccomendations och ger den value 0
 recommendations = 0
@@ -45,12 +45,12 @@ for game in Games:
     if game["genre"].lower() == genre: 
         score += 2 #boosta scoren på rätt genre med 2 poäng
 
-    if game["mood"] == mood:
+    if game["mood"].lower() == mood:
         score += 1 #boosta scoren på rätt mood med 1 poäng
 
     if score >= 2: # om score är större eller lika stor som 2 
-        print("Vi rekommenderar:", best_game) #visa best game (jag håller på att byta system så variablen best game visar ingenting just nu)
+        print("Vi rekommenderar:", game["title"]) #visa best game så variablen
         recommendations += 1 #räkna 1 reccomendation
 
-    if recommendations == 3: #när användaren har fått 3 reccomendations då bryt loopen 
+    if recommendations == 3: #när användaren har fått 3 reccomendations då bryt loopen
         break
