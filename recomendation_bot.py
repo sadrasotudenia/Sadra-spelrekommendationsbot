@@ -1,9 +1,9 @@
-Games = [
-    
+# Lista med spel och deras egenskaper
+games = [
     {"title": "Elden Ring", "genre": "Action RPG", "age": 16, "publisher": "FromSoftware", "mood": "Challenging"},
     {"title": "Half-Life 2", "genre": "FPS", "age": 16, "publisher": "Valve", "mood": "Immersive"},
     {"title": "Phasmophobia", "genre": "Horror", "age": 16, "publisher": "Kinetic Games", "mood": "Scary"},
-    {"titl7xd y7gue": "Minecraft", "genre": "Sandbox", "age": 7, "publisher": "Mojang", "mood": "Creative"},
+    {"title": "Minecraft", "genre": "Sandbox", "age": 7, "publisher": "Mojang", "mood": "Creative"},
     {"title": "The Witcher 3: Wild Hunt", "genre": "RPG", "age": 18, "publisher": "CD Projekt", "mood": "Epic"},
     {"title": "Call of Duty: Modern Warfare", "genre": "FPS", "age": 18, "publisher": "Activision", "mood": "Intense"},
     {"title": "Stardew Valley", "genre": "Simulation", "age": 7, "publisher": "ConcernedApe", "mood": "Relaxing"},
@@ -24,33 +24,79 @@ Games = [
     {"title": "The Sims 4", "genre": "Simulation", "age": 12, "publisher": "EA", "mood": "Creative"}
 ]
 
-#frågar anväden för genre och gör den lowercase
-genre = input("Vilken genre gillar du? ").lower()
+# Sparar genrer som användaren tidigare har gillat
+liked_genres = []
 
-#samma grej fast med mood
-mood = input("Vilken stämning vill du ha? ").lower()
 
-#gör variablen reccomendations och ger den value 0
-recommendations = 0
+def get_input(question):
+    """
+    Tar emot användarens input.
+    Om användaren skriver quit eller exit avslutas programmet.
+    """
 
-#oanvänt kod, igga
-best_score = 0
-best_game = ""
-#------------------
+    answer = input(question).lower()
 
-#loopar igenom games 
-for game in Games:
-    score = 0 #skapar variablen score och ger den value 0
+    if answer in ["quit", "exit"]:
+        print("Programmet avslutas.")
+        quit()
 
-    if game["genre"].lower() == genre: 
-        score += 2 #boosta scoren på rätt genre med 2 poäng
+    return answer
 
-    if game["mood"].lower() == mood:
-        score += 1 #boosta scoren på rätt mood med 1 poäng
 
-    if score >= 2: # om score är större eller lika stor som 2 
-        print("Vi rekommenderar:", game["title"]) #visa best game så variablen
-        recommendations += 1 #räkna 1 reccomendation
+# Huvudloop som körs tills användaren väljer att avsluta programmet
+while True:
 
-    if recommendations == 3: #när användaren har fått 3 reccomendations då bryt loopen
-        break
+    print("\n--- Spelrekommendationer ---")
+
+    genre = get_input("Vilken genre gillar du? ")
+    mood = get_input("Vilken stämning vill du ha? ")
+
+    recommendations = []
+
+    # Går igenom alla spel i listan
+    for game in games:
+
+        score = 0
+
+        # Matchande genre ger 2 poäng
+        if game["genre"].lower() == genre:
+            score += 2
+
+        # Matchande stämning ger 1 poäng
+        if game["mood"].lower() == mood:
+            score += 1
+
+        # Om användaren tidigare gillat samma genre
+        # får spelet extra poäng
+        if game["genre"] in liked_genres:
+            score += 3
+
+        # Om spelet fått minst 2 poäng rekommenderas det
+        if score >= 2:
+            recommendations.append(game)
+
+    print("\nVi rekommenderar:")
+
+    # Visar max 3 rekommendationer
+    for game in recommendations[:3]:
+        print("-", game["title"])
+
+    # Om inga spel hittades
+    if len(recommendations) == 0:
+        print("Tyvärr hittades inga spel som matchar dina önskemål.")
+
+    # Feedback från användaren
+    feedback = get_input(
+        "\nVar någon av rekommendationerna bra? (ja/nej) "
+    )
+
+    # Om användaren svarar ja
+    # sparas genren från första rekommendationen
+    if feedback == "ja" and len(recommendations) > 0:
+
+        liked_genre = recommendations[0]["genre"]
+
+        if liked_genre not in liked_genres:
+            liked_genres.append(liked_genre)
+
+        print("Tack! Jag kommer ta hänsyn till detta nästa gång.")
